@@ -1,15 +1,15 @@
 'use strict';
 
 var chai = require('chai'),
-    BB = require('bluebird');
+    BB = require('bluebird'),
+    waitThenReturnAsync = BB.promisify(waitThenReturn);
 
 chai.should();
 
 describe('promisification', function() {
     it('can create promise returning function of one value using promisify', function(done) {
-        var returnOne = BB.promisify(waitThenReturnOne);
 
-        returnOne(5, 'one')
+        waitThenReturnAsync(5, 'one')
             .then(function(value) {
                 value.should.equal('one');
             })
@@ -19,9 +19,8 @@ describe('promisification', function() {
 
     describe('can create promise returning function of many values using promisify', function() {
         it('using a returned array', function(done) {
-            var returnMany = BB.promisify(waitThenReturnMany);
 
-            returnMany(5, 'two')
+            waitThenReturnAsync(5, 'two', 'other', 'values')
                 .then(function(values) {
                     values.should.deep.equal([
                         'two',
@@ -34,9 +33,8 @@ describe('promisification', function() {
         });
 
         it('using a formal parameters', function(done) {
-            var returnMany = BB.promisify(waitThenReturnMany);
 
-            returnMany(5, 'two')
+            waitThenReturnAsync(5, 'two', 'other', 'values')
                 .spread(function(a, b, c) {
                     a.should.equal('two');
                     b.should.equal('other');
@@ -60,18 +58,19 @@ describe('promisification', function() {
     });
 });
 
-function waitThenReturnOne(time, value, cb) {
+function waitThenReturn( /* time, args..., cb */ ) {
+    var args = [].slice.apply(arguments),
+        time = args.shift(),
+        cb = args.pop();
+
     setTimeout(function() {
-        cb(undefined, value);
+        args.unshift(undefined);
+        cb.apply(cb, args);
     }, time);
 }
+
 function waitThenError(time, value, cb) {
     setTimeout(function() {
         cb(new Error('whoops'), value);
-    }, time);
-}
-function waitThenReturnMany(time, value, cb) {
-    setTimeout(function() {
-        cb(undefined, value, 'other', 'values');
     }, time);
 }
