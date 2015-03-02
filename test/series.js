@@ -1,5 +1,17 @@
 'use strict';
 
+/*
+var mkdirSync = function (path) {
+  try {
+    fs.mkdirSync(path);
+  } catch(e) {
+    if ( e.code != 'EEXIST' ) throw e;
+  }
+}
+
+https://github.com/substack/node-mkdirp
+*/
+
 var BB = require('bluebird'),
     chai = require('chai'),
     should = chai.should();
