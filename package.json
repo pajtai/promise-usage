@@ -1,0 +1,17 @@
+{
+  "name": "promise-usage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^2.9.13",
+    "chai": "^2.1.0",
+    "mocha": "^2.1.0",
+    "sinon": "^1.12.2"
+  }
+}
