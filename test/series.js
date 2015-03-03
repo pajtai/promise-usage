@@ -38,7 +38,7 @@ describe('Running functions in series', function() {
             })
             .then(done)
             .catch(done);
-        
+
     });
 
     it('can start a promise chain with a q promise', function(done) {
@@ -57,7 +57,7 @@ describe('Running functions in series', function() {
     });
 
     it('cannot handle errors in methods passed to resolve', function(done) {
-    
+
         try {
             BB.resolve(errorProne({}));
         } catch(e) {
@@ -68,7 +68,7 @@ describe('Running functions in series', function() {
     });
 
     it('can handle errors in methods passed to try', function(done) {
-        
+
         BB
             .try(function() {
                 return errorProne({some:'example'});
@@ -77,17 +77,16 @@ describe('Running functions in series', function() {
                 done('should not get here');
             })
             .catch(function(e) {
-                e.message.should.equal("Cannot read property 'not' of undefined");
+                e.message.should.equal('Cannot read property \'not\' of undefined');
                 done();
             });
     });
 });
 
-        function errorProne(user) {
-            return 5 === user.does.not.exist;
-        }
+function errorProne(user) {
+    return 5 === user.does.not.exist;
+}
 
 function returnFive() {
     return 5;
 }
-
