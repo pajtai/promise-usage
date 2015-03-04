@@ -61,7 +61,7 @@ describe('Running functions in series', function() {
         try {
             BB.resolve(errorProne({}));
         } catch(e) {
-            // expext and unhandled error here:
+            // expect an unhandled error here:
             done();
         }
 
@@ -78,8 +78,8 @@ describe('Running functions in series', function() {
             })
             .catch(function(e) {
                 e.message.should.equal('Cannot read property \'not\' of undefined');
-                done();
-            });
+            })
+            .then(done);
     });
 });
 
@@ -89,4 +89,10 @@ function errorProne(user) {
 
 function returnFive() {
     return 5;
+}
+
+function waitThen(time, value, cb) {
+    setTimeout(function() {
+        cb(undefined, value);
+    }, time);
 }
